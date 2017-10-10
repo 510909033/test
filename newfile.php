@@ -1,40 +1,47 @@
 <?php
- for ($i = 0; $i<100000;$i++){
-
-    $arr[] = rand(0,100000);
+class Sort{
+    
 }
 
- $t1 = microtime(true);
- $step=0;
-$returnAr = quickSort($arr);
+ for ($i = 0; $i<1000000;$i++){
 
-echo $step."\n";
+    $arr[] = rand(0,1000000);
+}
+
+$arr2 = $arr;
+
+ $t1 = microtime(true);
+// $returnAr = quickSort($arr);
+
+sort($arr2);
+
+var_dump(memory_get_peak_usage(true)/1024/1024);echo "\n";echo "\n";
+
 
 $t2 = microtime(true);
 echo "usetime:".($t2-$t1);
-$i=0;
-foreach ($returnAr as $k=>$v){
-    echo $v."\n";
-    if ($i++ > 10  ){
-        return ;
-    }
-}
+echo "\n";
+
+$returnAr1 = tong($arr);
+$t3 = microtime(true);
+echo "usetime:".($t3-$t2);
+echo "\n";
+
+var_dump(memory_get_peak_usage(true)/1024/1024);echo "\n";echo "\n";
+
+file_put_contents(__DIR__.'/aaa', var_export($returnAr1,true));
+
+
  
-//快速排序
 function quickSort($arr) { 
-    global $step;
-    $step++;
-    //先判断是否需要继续进行
     $length = count($arr);
     if($length <= 1) {
         return $arr;
     }
     //选择第一个元素作为基准
     $base_num = $arr[0];
-    //遍历除了标尺外的所有元素，按照大小关系放入两个数组内
-    //初始化两个数组
-    $left_array = array();  //小于基准的
-    $right_array = array();  //大于基准的
+    $left_array = array(); 
+    $right_array = array(); 
     for($i=1; $i<$length; $i++) {
         if($base_num > $arr[$i]) {
             //放入左边数组
@@ -44,47 +51,33 @@ function quickSort($arr) {
             $right_array[] = $arr[$i];
         }
     }
-    //再分别对左边和右边的数组进行相同的排序处理方式递归调用这个函数
     $left_array = quickSort($left_array);
     $right_array = quickSort($right_array);
     //合并
     return array_merge($left_array, array($base_num), $right_array);
 }
 
-
-
-function quickSort1($arr) {
-    //先判断是否需要继续进行
-    $length = count($arr);
-    if($length <= 1) {
-        return $arr;
+function tong($arr){
+    $new = [];
+    
+    for ($i=0,$max=max($arr);$i<$max;$i++){
+        $new[$i] = 0;
+    }
+    
+    foreach ($arr as $v){
+        $new[$v]++;
     }
     
     
-    
-    
-    
-    //选择第一个元素作为基准
-    $base_num = $arr[0];
-    //遍历除了标尺外的所有元素，按照大小关系放入两个数组内
-    //初始化两个数组
-    $left_array = array();  //小于基准的
-    $right_array = array();  //大于基准的
-    for($i=1; $i<$length; $i++) {
-        if($base_num > $arr[$i]) {
-            //放入左边数组
-            $left_array[] = $arr[$i];
-        } else {
-            //放入右边
-            $right_array[] = $arr[$i];
+    $arr = [];
+    foreach ($new as $k=>$v){
+        while ($v-- > 0 ){
+            $arr[] = $k;
         }
     }
-    //再分别对左边和右边的数组进行相同的排序处理方式递归调用这个函数
-    $left_array = quickSort($left_array);
-    $right_array = quickSort($right_array);
-    //合并
-    return array_merge($left_array, array($base_num), $right_array);
+    return $arr;
 }
+
 
 
 
