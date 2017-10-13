@@ -114,8 +114,11 @@ class SortDemo{
         //check
         $arr = [];
         for ($i=0;$i<10000;$i++){
-            $arr[] = rand(0,4000);
+            $arr[] = rand(0,40000);
         }
+        
+        $arr = array_unique($arr);
+        shuffle($arr);
         
         
         
